@@ -1,16 +1,20 @@
 #### Utility of a Risky Decision ####
 calcUtility <- function(PrefProb, V) {
   # The utility function takes the form
-  # u(v) = alpha * (1 - exp(-2*r*(v - vmin)/(vmax - vmin))), where
+  # u(v) = alpha * (1 - r^(-2*(v - vmin)/(vmax - vmin))), where
   # vmax is the best prospect value, vmin is the worst prospect value, v is a
   # prospect value between vmin and vmax, and r and alpha are values determined
-  # by the preference probability at the median prospect value (vmax-vmin)/2.
+  # by the preference probability PrefProb at the median prospect value (vmax-vmin)/2.
   # This assumes that u(vmax) = 1, and u(vmin) = 0.
-  
+  # 
+  # alpha = (PrefProb^2)/(2 * PrefProb - 1)
+  # r = PrefProb/(1 - PrefProb)
+  # r is the odds of the preference probability.
+  # 
   # Given a prospect value V between the worst prospect value WPV and the best
   # prospect value BPV, and given the median prospect preference probability
   # PrefProb, this calculates the utility of V.
-  
+  #
   # V = a vector of prospect values
   # PrefProb = preference probability
   
