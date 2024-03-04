@@ -3,9 +3,9 @@ Calculates utility and certain equivalent values for prospects given a stated ri
 
 The utility function takes the form
 
-`u(v) = alpha *(1 - r^(-2*v/vmax))`
+`u(v) = alpha *(1 - r^(-2*(v - vmin)/(vmax - vmin)))`
 
-where `vmax` is a best prospect value, `v` is a prospect value between 0 and `vmax`, and `r` and `alpha` are values determined by the preference probability at the median prospect value `vmax/2`. This assumes that `u(vmax) = 1`, and `u(0) = 0`.
+where `vmax` is a best prospect value, `v` is a prospect value between `vmin` and `vmax`, and `r` and `alpha` are values determined by the preference probability at the median prospect value `(vmax - vmin)/2`. This assumes that `u(vmax) = 1`, and `u(vmin) = 0`.
 
 Given a prospect value `PV` between 0 and the best prospect value BPV, and given the median prospect preference probability MPPP, these functions calculate the utility or the certain equivalent of PV. The following are the parameters used in the functions.
 
