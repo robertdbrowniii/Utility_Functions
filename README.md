@@ -1,5 +1,5 @@
 # Utility Functions
-Calculates utility, certainty equivalent, and other risk values for prospects given a stated risk attitude.
+Calculates utility, certainty equivalent, and other risk values for prospects given an entity's stated risk attitude.
 
 A utility function takes the form
 
