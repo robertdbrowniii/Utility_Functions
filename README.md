@@ -1,29 +1,28 @@
 # Utility Functions
-Calculates utility and certain equivalent values for prospects given a stated risk attitude.
+Calculates utility, certainty equivalent, and other risk values for prospects given a stated risk attitude.
 
-The utility function takes the form
+A utility function takes the form
 
-`u(v) = alpha *(1 - r^(-2*(v - vmin)/(vmax - vmin)))`
+ `u(v) = alpha * (1 - r^(-2*(v - vmin)/(vmax - vmin)))`
 
-where `vmax` is a best prospect value, `v` is a prospect value between `vmin` and `vmax`, and `r` and `alpha` are values determined by the preference probability at the median prospect value `(vmax - vmin)/2`. This assumes that `u(vmax) = 1`, and `u(vmin) = 0`.
+where `vmax` is a best prospect value (BPV), `vmin` is a worst prospect value (WPV),`v` is a prospect value between `vmin` and `vmax`, and `r` and `alpha` are values determined by the preference probability at the middle prospect value `(vmax - vmin)/2`. This assumes that `u(vmax) = 1`, and `u(vmin) = 0`.
 
-Given a prospect value `PV` between 0 and the best prospect value BPV, and given the median prospect preference probability MPPP, these functions calculate the utility or the certain equivalent of PV. The following are the parameters used in the functions.
+Given the preference probability `PrefProb` at the middle prospect value, we can determine
+ `alpha = (PrefProb^2)/(2 * PrefProb - 1)`, and
+ `r = PrefProb/(1 - PrefProb)`
+ `r` is the odds of the preference probability. Making the appropriate substitutions in `u(v)` gives a fully specified utility function for an entity.
 
-* <b>BPV</b> = best prospect value
-* <b>MPPP</b> = preference probability for the prospect at half BPV
-* <b>PV</b> = a supplied prospect value
-* <b>U</b> = a supplied utility value
+If the value of a risky deal is represented by a continuous probability distribution of prospect values (as in a net present value distribution), the following approach will yield a certainty equivalent for the NPV distribution.
 
-The functions here are appropriate for a given single prospect or utility value. However, if one needs the certain equivalent for a distribution of prospect values (as in the case of a deal with multiple prospects), calculate the expected value of the utility of the deal prospects, then calculate the certain equivalent with the Calc_CE2() function. For example, suppose a deal is constructed as
+ 1. Use the `calcUtility()` function on each prospect value in the NPV vector to generate a distribution of utility values.
+ 2. Determine the expected (or mean) of the utility distribution.
+ 3. With the value from (2), use the `calcCertEquiv()` function to determine the certainty equivalent of the prospect value distribution.
 
-  * `prob($100) = 0.2, utility = 1`
-  * `prob($50) = 0.3, utility = 2/3`
-  * `prob($0) = 0.5, utility = 0`
+The certainty equivalent is the value the entity should be willing to receive to forego the risk of the deal, if they remain consistent with their risk attitude.
 
-Then
-
-`E(utility) = 0.2*1 + 0.3*2/3 + 0.5*0 = 0.4`
-
-Using `Calc_CE2(BPV = 100, MPPP = 2/3, U = 0.4)` yields `CE = $25.73`.
- 
-If the deal is represented by a continuous probability distribution of prospect values (as in a net present value distribution), use the `Calc_Utility()` function on each prospect value to generate a distribution of utility values. Then determine the expected (or mean) of the resulting utility distribution. Finally, use the `Calc_CE2()` function using the expected utility to determine the certain equivalent of the prospect value distribution.
+Other values returned by `calcCertEquiv()` include
+ * `risk_premium`: The difference between the expected NPV of the risky deal and the certainty equivalent.
+ * `expected_potential_loss`: The average of the loss values of the risky deal, or mean(NPV | NPV<$0).
+ * `prob_loss`: The probability that loss occurs, or Pr(NPV<$0)
+ * `fair_premium`: The amount a risk neutral entity should be willing to pay to transfer the deal risk with an insurance policy. This is equal to `prob_loss * |expected_potential_loss|`.
+ * `risk_averse_prem`: The amount a risk averse entity should be willing to pay to transfer the deal risk with an insurance policy. This is the sum of the fair premium and the risk premium.
