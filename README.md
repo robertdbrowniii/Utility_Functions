@@ -18,7 +18,7 @@ If the value of a risky deal is represented by a continuous probability distribu
 
  1. Use the `calcUtility()` function on each prospect value in the NPV vector to generate a distribution of utility values.
  2. Determine the expected (or mean) of the utility distribution.
- 3. With the value from (2), use the `calcCertEquiv()` function to determine the certainty equivalent of the prospect value distribution.
+ 3. With the value from (2), use the `calcCertEquiv()` function to determine the certainty equivalent of the NPV distribution.
 
 The certainty equivalent is the guaranteed value the decision-maker should be indifferent to receive compared to the full range of potential values in the risky deal, if it remains consistent with its risk attitude. Comparing the certainty equivalents of alternative risky deals, a decision maker should prefer the deal with the highest certainty equivalent.
 
